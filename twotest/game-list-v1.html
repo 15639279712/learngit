@@ -1,0 +1,767 @@
+<!--<script src="../js/cookie.js"></script>
+<script type="text/javascript">Cookies.get('user')?0:top.location='../index.html';</script>-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>游戏信息</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="../js/theme/default/laydate.css?v=5.0.9" id="layuicss-laydate">
+		<link rel="stylesheet" type="text/css" href="../css/jquery.dataTables.css">
+		<style type="text/css">
+			li,ul{
+				list-style: none;
+				margin: 0;padding: 0;
+			}
+			.choose{
+				margin: 10px;
+				border: 1px solid #333;
+				padding: 10px;
+				display: inline-block;
+			}
+			.search>div{
+				margin-bottom: 10px;
+			}
+			.input-group-btn{
+				width: auto;
+			}
+			.layui-input{
+				width: 100px;
+			}
+			.tag{
+				padding: 20px;
+			}
+			#imgImage img{
+				height: 150px;
+				margin: 6px;
+			}
+			.detail #detPost table tr td:nth-child(2n+1){
+				min-width: 60px;
+			}
+			#more tr td{
+				text-align: left;
+			}
+			#more tr td:first-child{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+<div class="container" style="min-width: 750px;">
+	<ul class="nav nav-tabs">
+	  	<li class="active"><a href="#">游戏列表</a></li>
+	  	<li><a href="#">游戏详情</a></li>
+	  	<li><a href="#">游戏合并</a></li>
+	  	<li><a href="#">标签信息</a></li>
+	</ul>
+	<ul class="tab-content">
+		
+		<!--游戏列表-->
+		<li>
+			<div class="choose">
+				<div class="search" style="width: 360px; display: inline-block; vertical-align: top;">
+					<!--输入内容搜索-->
+				    <div class="input-group">
+				    	<div class="input-group-btn">
+					      	<select class="form-control" style="width: 110px;" data-chage = "1">
+					      		<option value="gameName">游戏名称</option>
+					      		<option value="packageName">游戏包名</option>
+					      		<option value="id">游戏ID</option>
+					      	</select>
+					    </div>
+				      	<input type="text" class="form-control" placeholder="输入要搜索的内容~" data-chage = "1">
+				    </div>
+				 	<!--根据游戏状态搜索-->
+				    <div class="state">
+				    	游戏状态：
+				    	<select class="form-control" style="width: 110px; display: inline-block;margin-left: 10px;" data-chage = "2">
+				      		<option value="">ALL</option>
+				      		<option value="0">待上线</option>
+				      		<option value="1">在线</option>
+				      		<option value="2">下线</option>
+				      		<option value="3">预约</option>
+				      		<option value="4">敬请期待</option>
+				      	</select>
+				    </div>
+					<!--根据创建时间搜索-->
+					<div>
+						创建时间：
+						<input type="text" class="layui-input" id="time1"> ~
+						<input type="text" class="layui-input" id="time2">
+					</div>
+					
+				</div>
+				<div class="confirm" style="display: inline-block; width: 300px;text-align: right;">
+				    <div class="input-group" style="padding: 36px 0 0 40px;">
+				    	<span class="input-group-btn">
+					      	<select class="form-control" style="width: 120px;">
+					      		<option value="1">编辑信息</option>
+					      		<option value="2">游戏状态</option>
+					      		<option value="3">创建时间</option>
+					      		<option value="4">修改时间</option>
+					      		<option value="5">全部条件</option>
+					      	</select>
+					    </span>
+					    <span class="input-group-btn">
+			       			<button class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 搜&nbsp;&nbsp;索 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			      		</span>
+				    </div>
+				    <ul id="doPage" class="pagination" style="margin:10px 24px 0;">
+						<li class="disabled"><a href="#" aria-label="Previous">&laquo;</a></li>
+					    <li class="active"><a href="#">1</a></li>
+					    <li><a href="#" aria-label="Next">&raquo;</a></li>
+					</ul>
+				</div>
+			</div>
+			<!--数据列表-->
+			<div class="data">
+				<table id="table" class="display" cellspacing="0" width="100%">
+				    <thead>
+				        <tr>
+				            <th>ID</th>
+				            <th>游戏名</th>
+				            <th>编辑后名称</th>
+				            <th>渠道来源</th>
+				            <th>包名</th>
+				            <th>APK</th>
+				            <th>状态</th>
+				            <th>创建时间</th>
+				            <th>修改时间</th> 
+				            <th style="width: 50px;">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+				
+		</li>
+		
+		<!--游戏详情-->
+		<li style="display: none;">
+			<div class="detail">
+				<div class="detTop" style="margin: 16px;">
+					<span style="font-size: 20px;margin-right: 200px;">游戏详情</span>
+					<select class="form-control" style="display: inline-block;width: 200px;">
+						<option value="">游戏详情</option>
+						<!--<option value="">4399</option>-->
+					</select>
+				</div>
+				<ul class="detCot">
+					<li class="detOne">
+						<form id="detPost" method="post" action="" enctype="multipart/form-data">
+							<table width="100%" style="border-collapse:separate; border-spacing:0px 10px; text-align: center;">
+								<tr><td>ID</td><td><input name="id" type="number" min="0" step="1" class="form-control" readonly/></td><td>游戏名称</td><td><input name="name" disabled type="text" class="form-control"/></td></tr>
+								<tr><td>编辑名称</td><td><input name="nickName" type="text" class="form-control"/></td><td>联想名称</td><td><input name="keywords" type="text" class="form-control"/></td></tr>
+								<tr><td>LOGO</td><td style="text-align: left;"><img id="imgIcon" width="66px"/></td><td></td><td><input type="file" name="icon"/></td></tr>
+								<tr><td>人气</td><td><input name="play_count" type="number" min="0" step="1" class="form-control"/></td><td>评论</td><td><select name="commentPackageId" class="form-control"></select></td></tr>
+								<tr><td>显示标签</td><td><input name="tag" type="text" class="form-control"/></td><td>评分</td><td><input name="rating" type="number" min="0" max="10" step="0.01" class="form-control"/></td></tr>
+								<tr><td>原始标签</td><td id="origTag" style="border:1px solid #ccc;padding: 6px;text-align: left;"></td></tr>　
+								<tr><td>状态</td><td><select name="state" class="form-control"><option value="0">待上线</option><option value="1">在线</option><option value="2">下线</option><option value="3">预约</option><option value="4">敬请期待</option></select></td>
+									<td>渠道包</td><td><select name="mainPackageId" class="form-control"></select></td>
+								</tr>　
+								<tr><td>简介</td><td colspan="3"><textarea name="descs" class="form-control" name="" rows="3" style="resize:none"></textarea></td></tr>
+								<tr><td>编辑寄语</td><td colspan="3"><input type="text" class="form-control"/></td></tr>
+								<tr><td>截图</td><td id="imgImage" colspan="2" style="border:1px solid #ccc"></td><td><input type="file" name="image"/></td></tr>
+								<tr><td>视频封面</td><td></td><td></td><td></td></tr>
+								<tr><td>视频</td><td style="border:1px solid #ccc"><video width="300px" style="margin: 6px;">当前浏览器不支持 video直接播放</video></td><td></td><td><input type="file" name="video"/></td></tr>
+								<tr><td>版号</td><td style="text-align: left;">有 <input name="hasPublicationNum" type="radio" value="1"style="margin-right: 10px;"/> 无 <input type="radio" name="hasPublicationNum" value="0"/></td></tr>
+								<tr><td colspan="4" style="text-align: right;"><button  class="btn btn-info detPost">&nbsp;&nbsp;&nbsp;提 交&nbsp;&nbsp;&nbsp;</button></td></tr>
+							</table>
+						</form>
+					</li>
+					<li style="display: none;">
+						<div style="text-align: right;"><button id="unbind" class="btn btn-danger">&nbsp;&nbsp;&nbsp; 取消绑定 &nbsp;&nbsp;&nbsp;</button></div>
+						<form id="moreP" action="" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="gid"/>
+							<table id="more" width="100%" style="border-collapse:separate; border-spacing:0px 10px; text-align: center;">
+								<tr id="package_name"><td style="width: 80px;">包名</td><td><input type="text" class="form-control"/></td></tr>
+								<tr id="apk"><td>APK</td><td><a>查看</a> &nbsp;&nbsp; <label><input type="file" name="apk" accept=".apk"/></label></td></tr>
+								<tr><td>Obb</td><td></td></tr>
+								<tr id="version_name"><td>版本号</td><td></td></tr>
+								<tr id="file_size"><td>大小</td><td></td></tr>
+								<tr><td>更新时间</td><td></td></tr>
+								<tr id="new_feature"><td>更新信息</td><td style="border:1px solid #ccc;padding: 6px;"></td></tr>
+								<tr><td></td><td style="text-align: right;"><button class="btn btn-info">&nbsp;&nbsp;&nbsp; 提 交 &nbsp;&nbsp;&nbsp;</button></td></tr>
+							</table>
+						</form>
+						
+					</li>
+				</ul>
+			</div>
+		</li>
+		
+		
+		<!--合并-->
+		<li style="display: none;">
+			<div class="merge" style="position: relative;">
+				<div class="input-group" style="margin-top: 10px;">
+			    	<div class="input-group-btn">
+				      	<select class="form-control" style="width: 110px;" data-chage = "1">
+				      		<option value="gameName">游戏名称</option>
+				      		<option value="packageName">游戏包名</option>
+				      		<option value="id">游戏ID</option>
+				      	</select>
+				    </div>
+			      	<input type="text" class="form-control" placeholder="输入要搜索的内容~" data-chage = "1">
+			      	<span class="input-group-btn">
+			      		<button class="btn btn-info sou">&nbsp;&nbsp;&nbsp; 搜 索 &nbsp;&nbsp;&nbsp;</button>
+			      	</span>
+			    </div>
+			    <button class="btn btn-primary" style="position: absolute;top: 0;left: 450px;">&nbsp;&nbsp;&nbsp; 合 并 &nbsp;&nbsp;&nbsp;</button>
+			    <div class="merCot" style="margin-top: 10px;">
+			    	<table id="merTable" class="display" cellspacing="0" width="100%">
+			    		<thead>
+					        <tr>
+					            <th>主包</th>
+					            <th>绑定</th>
+					            <th>ID</th>
+					            <th>名称</th>
+					            <th>渠道</th>
+					            <th>包名</th>
+					        </tr>
+					    </thead>
+			    	</table>
+			    </div>
+			</div>
+		</li>
+		
+		<!--标签管理-->
+		<li style="display: none;">
+			<div class="tag">
+				<div class="input-group" style="width: 600px;position: relative;">
+			      	<input type="text" class="form-control" placeholder="请输入内容...">
+			      	<button class="btn btn-primary addTag" style="position: absolute; right: -80px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 增&nbsp;&nbsp;加 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			      	<span class="input-group-btn">
+			        	<button class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 搜&nbsp;&nbsp;索 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			      	</span>
+			    </div>
+			    <div class="tagTable" style="margin-top: 20px;">
+			    	<table id="tagTable"  class="display" cellspacing="0" width="100%">
+			    		<thead>
+			    			<tr><td>ID</td><td>显示标签</td><td>映射标签</td><td>操作</td></tr>
+			    		</thead>
+			    	</table>
+			    </div>
+			    <div class="tagPage" style="width: 100%;height: 100%;position: absolute;background-color: rgba(0,0,0,.6);top: 0;left: 0;z-index: 100;display: none;text-align: center;">
+			    	<div class="tagPost"style="display:inline-block;background-color:#fff;width:680px;margin-top:100px;padding:20px 40px 20px 0px;">
+		    			<input type="hidden" name=""/>
+		    			<table width="100%" style="border-collapse:separate; border-spacing:0px 10px;">
+		    				<tr><td>显示标签</td><td><input type="text" name="name" class="form-control" /></td></tr>
+		    				<tr><td>映射标签</td><td><input type="text" name="list" class="form-control"/></td></tr>
+		    				<tr><td></td><td style="text-align: right;"><button class="btn btn-warning clos" style="margin-right: 20px;">&nbsp;&nbsp;&nbsp; 返 &nbsp; 回 &nbsp;&nbsp;&nbsp;</button><button class="btn btn-info post">&nbsp;&nbsp;&nbsp; 提 &nbsp; 交 &nbsp;&nbsp;&nbsp;</button></td></tr>
+		    			</table>
+			    	</div>
+			    </div>
+			</div>
+		</li>
+	</ul>
+	
+	
+</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	<script type="text/javascript" src="../js/jquery.min.js" ></script>
+	<script src="../js/laydate.js"></script>
+	<script src="../js/jquery.dataTables.min.js"></script>
+	<script src="../js/jquery.form.js"></script>
+	<script>
+		// 配置全局变量
+		var url='http://47.105.37.66:2330',starTime='',endTime='',detData={},pageNum=0,pageSize=200;
+		// 选项卡
+		$('.nav-tabs li').click(function () {
+			$('.nav-tabs li').removeClass('active');
+			$(this).addClass('active')
+			$('.tab-content>li').hide().eq($(this).index()).show();
+		});
+		// 时间插件
+		laydate.render({
+		  	elem: '#time1' //指定元素
+		  	,done: function(value, date, endDate){
+		  		starTime=value;
+		  		$('.confirm select').val('3');
+		  	}
+		});
+		laydate.render({
+		 	elem: '#time2'
+		 	,done: function(value, date, endDate){
+		  		endTime=value;
+		  		$('.confirm select').val('3');
+		  	}
+		});
+		// 检查元素改变时，修改查询类型
+		$('.search .input-group :input,.search .state :input').change(function(){
+			if($(this).data('chage')==1){
+				$('.confirm select').val('1');
+			}else if($(this).data('chage')==2){
+				$('.confirm select').val('2');
+			}
+		});
+		// 当输入内容时，可以按回车提交
+		$('.search input').keydown(function(){
+			if (event.keyCode == 13) {  
+				$('.confirm select').val('1');
+				getData(); 
+          	}
+		});
+		// 点击查询
+		$('.confirm button').click(function(){
+			if($('#time1').val()!=starTime){
+				alert('请再选择一次开始时间！');
+			}else if($('#time2').val()!=endTime){
+				alert('请再选择一次结束时间！');
+			}else{
+				getData();
+			}	
+		})
+		// 查询函数
+		function getData(){
+			table.ajax.url(url+'/gameIndex/searchGameIndex').load();
+		}
+		// 分页操作
+		$('#doPage').on('click','li:not(.disabled,.active)>a',function(){
+			if($(this).attr('aria-label')=='Previous'){
+				pageNum--;
+			}else if($(this).attr('aria-label')=='Next'){
+				pageNum++;
+			}else{
+				pageNum=$(this).html();
+			}
+			if(pageNum==0){$('#doPage li').eq(0).addClass('disabled')}
+			else{$('#doPage li').eq(0).removeClass('disabled')}
+			$('#doPage .active>a').html(pageNum+1)
+			getData();
+		});
+		
+		// 使用表格插件
+		var table=$('#table').DataTable({
+			"language": {"sProcessing":"处理中...","sLengthMenu":"显示 _MENU_ 项结果","sZeroRecords":"没有匹配结果","sInfo":"显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项","sInfoEmpty":"显示第 0 至 0 项结果，共 0 项","sInfoFiltered":"(由 _MAX_ 项结果过滤)","sInfoPostFix":"","sSearch":"搜索:","sUrl":"","sEmptyTable":"表中数据为空","sLoadingRecords":"载入中...","sInfoThousands":",","oPaginate":{"sFirst":"首页","sPrevious":"上页","sNext":"下页","sLast":"末页"},"oAria": {"sSortAscending":": 以升序排列此列","sSortDescending": ": 以降序排列此列"}},
+			"processing": true,  //是否显示进度遮罩
+			"ajax": {                   //ajax
+//		        url: "/meta.php",
+//		        type: "POST",
+		        data: function(d) {
+		        	d.fromTimestamp='',d.toTimestamp='',d.state='',d.pageNum=pageNum,d.pageSize=pageSize;
+		            //添加额外的参数传给服务器  
+		            if($('.confirm select').val()==2){
+		            	d.state=$('.state select').val();
+		            }else if($('.confirm select').val()==3){
+		            	if(new Date(starTime+' 00:00:00')!='Invalid Date'){
+							d.fromTimestamp=new Date(starTime+' 00:00:00').getTime();
+						}
+						if(new Date(endTime+' 00:00:00')!='Invalid Date'){
+							d.toTimestamp=new Date(endTime+' 00:00:00').getTime();
+						}
+		            }else{
+		            	d[$('.search .input-group select').val()]=$('.search .input-group input').val();
+		            }
+		        },
+		        dataSrc:function(data){
+		        	console.log(data);
+		        	return data
+		        },
+		    },
+//		    "pageLength": 3,		//默认每页条数
+//		    "serverSide": true,     //开启服务端传输数据
+		    columns: [{
+		        "data": "id" 
+		    },
+		    {
+		        "data": "name",
+		    },
+		    {
+		        "data": "nickName"
+		    },
+		    {
+		        "data": "platform",
+		        "defaultContent": "暂无"
+		    },
+		    {
+		        "data": "package_name"
+		    },
+		    {
+		        "data": "apk_url",
+		    },
+		    {
+		        "data": "state",
+		    },
+		    {
+		        "data": "createTime",
+		        "orderDataType": "dom-time"
+		    },
+		    {
+		        "data": "modifyTime",
+		        "orderDataType": "dom-time"
+		    },
+		    {
+		        "data":"id"
+		    }],
+			"columnDefs": [{
+		        "render": function(data, type, row, meta) {
+		            var isDate=new Date(data);
+		            return isDate.getFullYear()+'-'+(isDate.getMonth()-1+2)+'-'+isDate.getDate()+' '+isDate.getHours()+':'+isDate.getMinutes()
+		        },
+		        "targets": [-3,-2]
+		    },
+		    {
+		        "render": function(data, type, row, meta) {
+		            return data==''?'无':'<a href="'+data+'">有</a>';
+		        },
+		        //指定是第三列
+		        "targets": 5
+		    },
+		    {
+		        "render": function(data, type, row, meta) {
+		            //渲染 把数据源中的标题和url组成超链接
+		            return '<button onclick="gameEdit(\''+meta.row+'\')">编辑</button>';
+		        },
+		        //指定是第三列
+		        "targets": -1
+		    }]
+		})
+		//排序
+		$.fn.dataTable.ext.order['dom-time'] = function  ( settings, col ){
+		    return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+		        return new Date(td.innerHTML).getTime();
+		    } );
+		}
+		$.fn.dataTable.ext.errMode = function(s,h,m){
+			console.log(m)
+			if(m!="DataTables warning: table id=merTable - Invalid JSON response. For more information about this error, please see http://datatables.net/tn/1" && m!="DataTables warning: table id=table - Requested unknown parameter 'platform' for row 1, column 3. For more information about this error, please see http://datatables.net/tn/4"&& m!='DataTables warning: table id=table - Invalid JSON response. For more information about this error, please see http://datatables.net/tn/1' && m!='DataTables warning: table id=tagTable - Invalid JSON response. For more information about this error, please see http://datatables.net/tn/1'){
+				alert(m);
+			}
+		}
+		
+		
+		// 游戏详情
+		// 查看其他包信息
+		$('.detail .detTop select').change(function(){
+			if($(this).val() != 'det'){
+				$('.detCot li').hide().eq(1).show();
+				var now=detData.chanList[$(this).val()];
+				$('#moreP input[name=gid]').val(now.gid);
+				$('#more #package_name td input').val(now.package_name);
+				$('#more #apk a').prop('href',now.apk_url);
+				$('#more #version_name td').eq(1).html(now.version_name);
+				$('#more #file_size td').eq(1).html((now.file_size/1048576).toFixed(2)+'M');
+				$('#more #new_feature td').eq(1).html(now.new_feature);
+			}else{
+				$('.detCot li').hide().eq(0).show();
+			}
+		})
+		function gameEdit(index){
+			detData=table.data()[index];
+			console.log(detData);
+			detShow();
+		}
+		function detShow(){
+			$('.detCot li').hide().eq(0).show();
+			if(!detData.id)return;
+			flieShow();
+			$('.nav-tabs li').removeClass('active').eq(1).addClass('active');
+			$('.tab-content>li').hide().eq(1).show();
+			$.getJSON(url+'/gameIndex/getSubInfoByIndex',{indexId:detData.id},function(d){
+				var text='',html='<option value="det">游戏详情</option>',htm='',ht='';
+				$('.detail input[name=tag]').val(d.tag.join(','));
+				detData.chanList=d.subgame;
+				for(var i=0;i<d.subgame.length;i++){
+					var now=d.subgame[i];
+					html+='<option value="'+i+'">'+now.platform+'--'+now.gid+'</option>';
+					htm+='<option value="'+now.gid+'">'+now.platform+'--'+now.gid+'</option>';
+					ht+=now.platform+'--'+now.gid+': '+now.categroy_name+'<br/>'
+				}
+				$('.detail .detTop select').html(html);
+				$('.detail select[name=mainPackageId]').html(htm).val(detData.mainPackageId);
+				$('.detail select[name=commentPackageId]').html(htm).val(detData.commentPackageId);
+				$('.detail #origTag').html(ht);
+			});
+			$('.detail input[name=id]').val(detData.id);
+			$('.detail input[name=play_count]').val(detData.play_count);
+			$('.detail input[name=name]').val(detData.name);
+			$('.detail input[name=nickName]').val(detData.nickName);
+			$('.detail input[name=keywords]').val(detData.keywords);
+			$('.detail input[name=rating]').val(detData.rating);
+			$('.detail select[name=state]').val(detData.state);
+			$('.detail select[name=platform]').val(detData.platform);
+			$('.detail textarea[name=descs]').val(detData.descs);
+			if(detData.hasPublicationNum==0){$('.detail input[name=hasPublicationNum][value=0]').prop('checked',true)}
+			else if(detData.hasPublicationNum==1){$('.detail input[name=hasPublicationNum][value=1]').prop('checked',true)}
+		}
+		// 提交
+//		$('.detPost').click(function(){
+//			var data={};
+//			if($('.detail input[name=id]').val()==='' || !detData.id){alert('请在列表页点击编辑后提交！');return}
+//			data.id=$('.detail input[name=id]').val();
+//			data.nickName=$('.detail input[name=nickName]').val();
+//			data.keywords=$('.detail input[name=keywords]').val();
+//			data.rating=$('.detail input[name=rating]').val();
+//			data.state=$('.detail select[name=state]').val();
+//			data.platform=$('.detail select[name=platform]').val();
+//			data.descs=$('.detail textarea[name=descs]').val();
+//			data.platform=$('.detail input[name=hasPublicationNum]').val();
+//			console.log(data)
+//		})
+		$('#detPost').ajaxForm({
+			url : url+"/gameIndex/updateGameIndex",
+			beforeSubmit:function(){
+				if($('.detail input[name=id]').val()==='' || !detData.id){alert('请在列表页点击编辑后提交！');return false}
+			},
+			success:function(d){
+				if(!!d.info){
+					alert(d.info);
+				}else{
+					detData={};
+					$('.nav-tabs li').removeClass('active').eq(0).addClass('active');
+					$('.tab-content>li').hide().eq(0).show();
+					getData()
+				}
+			}
+		})
+		// 更新文件显示信息
+		function flieShow(){
+			if(!detData.id){alert('存在错误！'); return};
+			$('.detail #imgIcon').prop('src',detData.icon_url);
+			var html='';
+			if(!(detData.image_url==null)){
+				$(detData.image_url.split(' ')).each(function(){
+					html+='<img src="'+this+'"/>';
+				})
+			}
+			$('.detail #imgImage').html(html);
+			$('.detail video').prop('src',detData.video_url);
+		}
+		// 更多信息提交（apk）
+		$('#moreP').ajaxForm({
+			url : url+"/gameIndex/updateGame",
+			success:function(d){
+				console.log(d);
+			}
+		})
+		// 解除绑定
+		$('#unbind').click(function(){
+			console.log($('#moreP input[name=gid]').val());
+			if(confirm('你确定要解绑吗？')){
+				if($('#moreP input[name=gid]').val() !=''){
+					$.get(url+'/gameIndex/unbind',{mainIndex:detData.id,subGameId:JSON.stringify([$('#moreP input[name=gid]').val()])},function(d){
+						if(d.type=='success'){
+							detData={};
+							$('.nav-tabs li').removeClass('active').eq(0).addClass('active');
+							$('.tab-content>li').hide().eq(0).show();
+						}else{
+							alert(d.info);	
+						}
+					})
+				}	
+			}			
+		})
+		
+		
+		
+		
+		// 绑定
+		// 查询
+		var oldMergeD=[];
+		$('.merge .input-group button.sou').click(function(){
+			merTable.ajax.url(url+'/gameIndex/searchGameIndex').load();
+		});
+		$('.merge input').keydown(function(){
+			if (event.keyCode == 13) {  
+				merTable.ajax.url(url+'/gameIndex/searchGameIndex').load();
+          	}
+		});
+		// 二次查询前的操作
+		$('.merge').on('click','input[type=radio],input[type=checkbox][name=a]',function(){
+			var sor=$(this).prop('type')=='radio',psor=true,isnowD=merTable.data()[$(this).data('index')],check=$(this).prop('checked');
+			sor?isnowD.a=check:isnowD.b=check;
+			for(var i=0;i<oldMergeD.length;i++){
+				if(sor){oldMergeD[i].a=false}
+				if(oldMergeD[i].id==isnowD.id){
+					sor?oldMergeD[i].a=check:oldMergeD[i].b=check;
+					psor=false;
+				}
+				if(!oldMergeD[i].a && !oldMergeD[i].b){
+					oldMergeD.splice(i,1);
+					i--;
+				}
+			}
+			psor?oldMergeD.push(isnowD):0;
+			console.log(oldMergeD);
+		})
+		
+		// 点击合并
+		$('.merge>button').click(function(){
+			if($('.merge input[type=radio]:checked').prop('checked')){
+				var data={};
+				data.mainIndex=$('.merge input[type=radio]:checked').val();
+				data.subIndex=[];
+				$('.merge input[type=checkbox][name=a]:checked').each(function(){
+					if($(this).val()!=data.mainIndex){
+						data.subIndex.push($(this).val());
+					}
+				})
+				if(data.subIndex.length<1){
+					alert('至少选择两个进行绑定！');return;
+				}else{
+					if(confirm('你确定要合并吗？')){ 
+						$.get(url+'/gameIndex/combind',{mainIndex:data.mainIndex,subIndex:JSON.stringify(data.subIndex)},function(d){
+							if(d.type=='success'){
+								oldMergeD=[];
+								merTable.ajax.url(url+'/gameIndex/searchGameIndex').load();
+							}else{
+								alert(data.info);
+							}	
+						})
+					}
+				}
+			}else{
+				alert('请确定主包！');
+			}
+			
+		})
+		var merTable=$('#merTable').DataTable({
+			"processing": true,  //是否显示进度遮罩
+			"language": {"sProcessing":"处理中...","sLengthMenu":"显示 _MENU_ 项结果","sZeroRecords":"没有匹配结果","sInfo":"显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项","sInfoEmpty":"显示第 0 至 0 项结果，共 0 项","sInfoFiltered":"(由 _MAX_ 项结果过滤)","sInfoPostFix":"","sSearch":"搜索:","sUrl":"","sEmptyTable":"表中数据为空","sLoadingRecords":"载入中...","sInfoThousands":",","oPaginate":{"sFirst":"首页","sPrevious":"上页","sNext":"下页","sLast":"末页"},"oAria": {"sSortAscending":": 以升序排列此列","sSortDescending": ": 以降序排列此列"}},
+			"pageLength": 100,
+			"ajax": {  //ajax
+				data: function(d) {
+					d[$('.merge .input-group select').val()]=$('.merge .input-group input').val();
+				},
+		        dataSrc:function(data){
+		        	// 先去重再合并
+		        	for(var i=0;i<oldMergeD.length;i++){
+		        		for(var j=0;j<data.length;j++){
+		        			if(oldMergeD[i].id==data[j].id){
+		        				data.splice(j,1);
+								j--;
+		        			}
+		        		}
+		        	}
+		        	data=oldMergeD.concat(data);
+		        	console.log(data);
+		        	return data
+		        },
+		    },
+		    columns: [{
+		    	"sClass": "text-center",
+		        "data": "id"
+		    },
+		    {
+		    	"sClass": "text-center",
+		        "data": "id" 
+		    },
+		    {
+		        "data": "id" 
+		    },
+		    {
+		        "data": "name",
+		    },
+		    {
+		        "data": "platform",
+		    },
+		    {
+		        "data":"package_name"
+		    }],
+		    "columnDefs": [{
+		        "render": function(data, type, row, meta) {
+		        	return '<label style="width:100%;"><input type="radio" name="main" '+(row.a?'checked':'')+' data-index="'+meta.row+'" value="'+data+'"></label>'
+		        },
+		        "targets": 0
+		    },
+		    {
+		    	"render": function(data, type, row, meta) {
+		        	return '<label style="width:100%;"><input type="checkbox" name="a" '+(row.b?'checked':'')+' data-index="'+meta.row+'" value="'+data+'"></label>'
+		        },
+		        "targets": 1
+		    }]
+		});
+		
+		
+		
+		// 标签信息
+		// 当输入内容时，可以按回车提交
+		$('.tag .input-group input').keydown(function(){
+			if (event.keyCode == 13) {  
+				tagTable.ajax.url(url+'/gameTypeTag/getAllTag').load();
+          	}
+		});
+		$('.tag .input-group .input-group-btn button').click(function(){tagTable.ajax.url(url+'/gameTypeTag/getAllTag').load();})
+		// 表格插件
+		var tagTable=$('#tagTable').DataTable({
+			"processing": true,  //是否显示进度遮罩
+			"language": {"sProcessing":"处理中...","sLengthMenu":"显示 _MENU_ 项结果","sZeroRecords":"没有匹配结果","sInfo":"显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项","sInfoEmpty":"显示第 0 至 0 项结果，共 0 项","sInfoFiltered":"(由 _MAX_ 项结果过滤)","sInfoPostFix":"","sSearch":"搜索:","sUrl":"","sEmptyTable":"表中数据为空","sLoadingRecords":"载入中...","sInfoThousands":",","oPaginate":{"sFirst":"首页","sPrevious":"上页","sNext":"下页","sLast":"末页"},"oAria": {"sSortAscending":": 以升序排列此列","sSortDescending": ": 以降序排列此列"}},
+			"ajax": {  //ajax
+				data: function(d) {
+					d.name=$('.tag .input-group input').val();
+				},
+		        dataSrc:function(data){
+		        	console.log(data);
+		        	return data
+		        },
+		    },
+		    columns: [{
+		        "data": "id" 
+		    },
+		    {
+		        "data": "name" 
+		    },
+		    {
+		        "data": "mapping",
+		    },
+		    {
+		        "data":"id"
+		    }],
+		    "columnDefs": [{
+		        "render": function(data, type, row, meta) {
+		        	return '<button onclick="tagDel('+data+','+meta.row+')" style="margin-right: 10px;" class="btn btn-danger btn-xs">删除</button><button onclick="tagEdit('+meta.row+')" class="btn btn-info btn-xs">编辑</button>'
+		        },
+		        "targets": -1
+		    }]
+		});
+		// 删除
+		function tagDel(id,index){
+			if(confirm('你确定要删除吗？')){
+				$.getJSON(url+'/gameTypeTag/delTag',{id:id},function(d){
+					if(d.type=='success'){
+						tagTable.row(index).remove().draw( false );
+					}
+				})
+			}
+		}
+		// 编辑
+		function tagEdit(index){
+			var data=tagTable.data()[index]
+			$('.tagPage input[type=hidden]').prop('name','id').val(data.id);
+			$('.tag input[name=name]').val(data.name);
+			$('.tag input[name=list]').val(data.mapping);
+			$('.tagPage').show();
+		}
+		// 增加标签
+		$('.tag .addTag').click(function(){$('.tagPage').show().find('input[type=text]').val('');$('.tagPage input[type=hidden]').prop('name','')});
+		// 返回
+		$('.tag .clos').click(function(){$('.tagPage').hide()});
+		// 数据提交
+		$('.tag .post').click(function(){
+			var data={name:$('.tag input[name=name]').val(),mapping:$('.tag input[name=list]').val()};
+			if($('.tag input[name=id]').val()){data.id=$('.tag input[name=id]').val()}
+			$.post(url+'/gameTypeTag/updateTag',data,function(d){
+				if(d.type=="success"){
+					if($('.tag input[name=id]').val()){$('.tagPage').hide();tagTable.load();}
+					else{
+						$('.tagPage input[type=text]').val('');
+						tagTable.row.add(d).draw();
+					}
+				}else{
+					alert('未成功！')
+				}
+			})
+		})
+		
+	</script>
+	</body>
+</html>

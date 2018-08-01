@@ -1,5 +1,5 @@
-<!--<script src="../js/cookie.js"></script>
-<script type="text/javascript">Cookies.get('user')?0:top.location='../index.html';</script>-->
+<!-- <script src="../js/cookie.js"></script> -->
+<!-- <script type="text/javascript">Cookies.get('user')?0:top.location='../index.html';</script> -->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -149,22 +149,103 @@
 					<li class="detOne">
 						<form id="detPost" method="post" action="" enctype="multipart/form-data">
 							<table width="100%" style="border-collapse:separate; border-spacing:0px 10px; text-align: center;">
-								<tr><td>ID</td><td><input name="id" type="number" min="0" step="1" class="form-control" readonly/></td><td>游戏名称</td><td><input name="name" disabled type="text" class="form-control"/></td></tr>
-								<tr><td>编辑名称</td><td><input name="nickName" type="text" class="form-control"/></td><td>联想名称</td><td><input name="keywords" type="text" class="form-control"/></td></tr>
-								<tr><td>LOGO</td><td style="text-align: left;"><img id="imgIcon" width="66px"/></td><td></td><td><input type="file" name="icon"/></td></tr>
-								<tr><td>人气</td><td><input name="play_count" type="number" min="0" step="1" class="form-control"/></td><td>评论</td><td><select name="commentPackageId" class="form-control"></select></td></tr>
-								<tr><td>显示标签</td><td><input name="tag" type="text" class="form-control"/></td><td>评分</td><td><input name="rating" type="number" min="0" max="10" step="0.01" class="form-control"/></td></tr>
-								<tr><td>原始标签</td><td id="origTag" style="border:1px solid #ccc;padding: 6px;text-align: left;"></td></tr>　
-								<tr><td>状态</td><td><select name="state" class="form-control"><option value="0">待上线</option><option value="1">在线</option><option value="2">下线</option><option value="3">预约</option><option value="4">敬请期待</option></select></td>
-									<td>渠道包</td><td><select name="mainPackageId" class="form-control"></select></td>
+								<tr>
+									<td>ID</td>
+									<td><input name="id" type="number" min="0" step="1" class="form-control" readonly/></td>
+									<td>游戏名称</td><td><input name="name" disabled type="text" class="form-control"/></td>
+								</tr>
+								<tr>
+									<td>编辑名称</td>
+									<td><input name="nickName" type="text" class="form-control"/></td>
+									<td>联想名称</td>
+									<td><input name="keywords" type="text" class="form-control"/></td>
+								</tr>
+								<tr>
+									<td>LOGO</td>
+									<td style="text-align: left;">
+										<img id="imgIcon" width="66px"/>
+									</td>
+									<td></td>
+									<td><input type="file" name="icon"/></td>
+								</tr>
+								<tr>
+									<td>人气</td>
+									<td><input name="play_count" type="number" min="0" step="1" class="form-control"/></td>
+									<td>评论</td>
+									<td><select name="commentPackageId" class="form-control"></select></td>
+								</tr>
+								<tr>
+									<td>显示标签</td>
+									<td><input name="tag" type="text" class="form-control"/></td>
+									<td>评分</td>
+									<td><input name="rating" type="number" min="0" max="10" step="0.01" class="form-control"/></td>
+								</tr>
+								<tr>
+									<td>原始标签</td>
+									<td id="origTag" style="border:1px solid #ccc;padding: 6px;text-align: left;"></td>
 								</tr>　
-								<tr><td>简介</td><td colspan="3"><textarea name="descs" class="form-control" name="" rows="3" style="resize:none"></textarea></td></tr>
-								<tr><td>编辑寄语</td><td colspan="3"><input type="text" class="form-control"/></td></tr>
-								<tr><td>截图</td><td id="imgImage" colspan="2" style="border:1px solid #ccc"></td><td><input type="file" name="image"/></td></tr>
-								<tr><td>视频封面</td><td></td><td></td><td></td></tr>
-								<tr><td>视频</td><td style="border:1px solid #ccc"><video width="300px" style="margin: 6px;">当前浏览器不支持 video直接播放</video></td><td></td><td><input type="file" name="video"/></td></tr>
-								<tr><td>版号</td><td style="text-align: left;">有 <input name="hasPublicationNum" type="radio" value="1"style="margin-right: 10px;"/> 无 <input type="radio" name="hasPublicationNum" value="0"/></td></tr>
-								<tr><td colspan="4" style="text-align: right;"><button  class="btn btn-info detPost">&nbsp;&nbsp;&nbsp;提 交&nbsp;&nbsp;&nbsp;</button></td></tr>
+								<tr>
+									<td>状态</td>
+									<td>
+										<select name="state" class="form-control">
+											<option value="0">待上线</option>
+											<option value="1">在线</option>
+											<option value="2">下线</option>
+											<option value="3">预约</option>
+											<option value="4">敬请期待</option>
+										</select>
+									</td>
+									<td>渠道包</td>
+									<td><select name="mainPackageId" class="form-control"></select></td>
+								</tr>　
+								<tr>
+									<td>简介</td>
+									<td colspan="3">
+										<textarea name="descs" class="form-control" name="" rows="3" style="resize:none"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>编辑寄语</td>
+									<td colspan="3"><input type="text" class="form-control"/></td>
+								</tr>
+								<tr>
+									<td>截图</td>
+									<td id="imgImage" colspan="2" style="border:1px solid #ccc"></td>
+									<td><input type="file" name="image"/></td>
+								</tr>
+								<tr>
+									<td>视频封面</td>
+									<td id="videoImage" colspan="2" style="border: 1px solid #ccc;"></td>
+									<td><input type="file" name="videoImage"/></td>
+									<!-- <td></td> -->
+								</tr>
+								<tr>
+									<td>视频</td>
+									<td style="border:1px solid #ccc">
+										<video width="300px" style="margin: 6px;">当前浏览器不支持 video直接播放</video>
+									</td>
+									<td></td>
+									<td><input type="file" name="video"/></td>
+								</tr>
+								<tr>
+									<td>版号</td>
+									<td style="text-align: left;">
+										有 <input type="radio" name="hasPublicationNum" value="1" style="margin-right: 10px;"/> 
+										无 <input type="radio" name="hasPublicationNum" value="0"/>
+									</td>
+								</tr>
+								<tr>
+									<td>视频横竖</td>
+									<td style="text-align: left;">
+										横 <input type="radio" name="isHorVideo" value="1" style="margin-right: 10px;"/> 
+										竖 <input type="radio" name="isHorVideo" value="0"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" style="text-align: right;">
+										<button  class="btn btn-info detPost">&nbsp;&nbsp;&nbsp;提 交&nbsp;&nbsp;&nbsp;</button>
+									</td>
+								</tr>
 							</table>
 						</form>
 					</li>
@@ -273,7 +354,7 @@
 	<script src="../js/jquery.form.js"></script>
 	<script>
 		// 配置全局变量
-		var url='http://47.105.37.66:2330',starTime='',endTime='',detData={},pageNum=0,pageSize=200;
+		var url='//233xyx.com:2330',starTime='',endTime='',detData={},pageNum=0,pageSize=200;
 		// 选项卡
 		$('.nav-tabs li').click(function () {
 			$('.nav-tabs li').removeClass('active');
@@ -492,6 +573,8 @@
 			$('.detail textarea[name=descs]').val(detData.descs);
 			if(detData.hasPublicationNum==0){$('.detail input[name=hasPublicationNum][value=0]').prop('checked',true)}
 			else if(detData.hasPublicationNum==1){$('.detail input[name=hasPublicationNum][value=1]').prop('checked',true)}
+			if(detData.isHorVideo==0){$('.detail input[name=isHorVideo][value=0]').prop('checked',true)}
+			else if(detData.isHorVideo==1){$('.detail input[name=isHorVideo][value=1]').prop('checked',true)}
 		}
 		// 提交
 //		$('.detPost').click(function(){
@@ -533,7 +616,14 @@
 					html+='<img src="'+this+'"/>';
 				})
 			}
+			var image_video_html = '';
+			if(!(detData.videoImage == null)) {
+				$(detData.videoImage.split(' ')).each(function(){
+					image_video_html+='<img src="'+this+'"/>';
+				})
+			}
 			$('.detail #imgImage').html(html);
+			$('.detail #videoImage').html(image_video_html);
 			$('.detail video').prop('src',detData.video_url);
 		}
 		// 更多信息提交（apk）
